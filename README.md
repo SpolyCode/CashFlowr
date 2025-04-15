@@ -1,39 +1,35 @@
 # CashFlowr
 
-Eine mobile App zur Verwaltung Ihrer Finanzen.
+A modern financial management app built with React Native and Expo.
 
 ## Features
 
-- Einnahmen und Ausgaben verwalten
-- Abonnements im Überblick behalten
-- Sparziele setzen und verfolgen
-- Finanzübersicht mit detaillierten Analysen
+- Track income and expenses
+- Manage subscriptions
+- Set savings goals
+- Financial overview and analytics
+- Secure authentication with Supabase
 
 ## Installation
 
-1. Klonen Sie das Repository:
-```bash
-git clone https://github.com/SpolyCode/CashFlowr.git
-```
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm start`
 
-2. Installieren Sie die Abhängigkeiten:
-```bash
-cd CashFlowr
-npm install
-```
-
-3. Starten Sie die App:
-```bash
-npm start
-```
-
-## Technologien
+## Technologies Used
 
 - React Native
 - Expo
 - React Navigation
 - React Native Paper
+- Supabase
+- date-fns
+- react-native-chart-kit
 
-## Lizenz
+## License
 
-MIT 
+MIT
+
+## Test Webhook Notification
+
+This is a test commit to verify the Discord webhook integration. 
