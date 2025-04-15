@@ -32,4 +32,9 @@ MIT
 
 ## Test Webhook Notification
 
-This is a test commit to verify the Discord webhook integration. 
+This is a test commit to verify the Discord webhook integration with detailed embeds.
+
+## Recent Changes
+
+- Updated Discord notification system to use detailed embeds
+- Added links to changed files in notifications 
