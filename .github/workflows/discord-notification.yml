@@ -10,9 +10,48 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: jitterbit/get-changed-files@v1
+
       - name: Discord Notification
         uses: Ilshidur/action-discord@master
         with:
-          args: 'New changes pushed to CashFlowr!'
+          args: '{
+            "embeds": [{
+              "title": "New Changes in CashFlowr",
+              "description": "Changes pushed to the repository",
+              "color": 3447003,
+              "fields": [
+                {
+                  "name": "Commit Message",
+                  "value": "${{ github.event.head_commit.message }}",
+                  "inline": false
+                },
+                {
+                  "name": "Author",
+                  "value": "${{ github.actor }}",
+                  "inline": true
+                },
+                {
+                  "name": "Branch",
+                  "value": "${{ github.ref_name }}",
+                  "inline": true
+                },
+                {
+                  "name": "Changed Files",
+                  "value": "${{ steps.changed-files.outputs.all }}",
+                  "inline": false
+                }
+              ],
+              "url": "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}",
+              "timestamp": "${{ github.event.head_commit.timestamp }}"
+            }]
+          }'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }} 
