@@ -20,45 +20,62 @@ jobs:
         uses: jitterbit/get-changed-files@v1
 
       - name: Discord Notification
-        uses: Ilshidur/action-discord@master
+        uses: actions/github-script@v6
         with:
-          args: |
-            {
-              "username": "CashFlowr Bot",
-              "avatar_url": "https://raw.githubusercontent.com/SpolyCode/CashFlowr/master/assets/icon.png",
-              "embeds": [{
-                "title": "🔄 New Changes in CashFlowr",
-                "description": "Changes have been pushed to the repository",
-                "color": 3447003,
-                "fields": [
-                  {
-                    "name": "📝 Commit Message",
-                    "value": "```${{ github.event.head_commit.message }}```",
-                    "inline": false
-                  },
-                  {
-                    "name": "👤 Author",
-                    "value": "${{ github.actor }}",
-                    "inline": true
-                  },
-                  {
-                    "name": "🌿 Branch",
-                    "value": "${{ github.ref_name }}",
-                    "inline": true
-                  },
-                  {
-                    "name": "📄 Changed Files",
-                    "value": "```${{ steps.changed-files.outputs.all }}```",
-                    "inline": false
-                  }
-                ],
-                "url": "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}",
-                "timestamp": "${{ github.event.head_commit.timestamp }}",
-                "footer": {
-                  "text": "CashFlowr • ${{ github.repository }}",
-                  "icon_url": "https://raw.githubusercontent.com/SpolyCode/CashFlowr/master/assets/icon.png"
+          script: |
+            const { data: { html_url } } = await github.rest.repos.getCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha
+            });
+            
+            const embed = {
+              title: "🔄 New Changes in CashFlowr",
+              description: "Changes have been pushed to the repository",
+              color: 3447003,
+              fields: [
+                {
+                  name: "📝 Commit Message",
+                  value: `\`\`\`${context.payload.head_commit.message}\`\`\``,
+                  inline: false
+                },
+                {
+                  name: "👤 Author",
+                  value: context.actor,
+                  inline: true
+                },
+                {
+                  name: "🌿 Branch",
+                  value: context.ref.replace('refs/heads/', ''),
+                  inline: true
+                },
+                {
+                  name: "📄 Changed Files",
+                  value: `\`\`\`${process.env.CHANGED_FILES}\`\`\``,
+                  inline: false
                 }
-              }]
-            }
+              ],
+              url: html_url,
+              timestamp: context.payload.head_commit.timestamp,
+              footer: {
+                text: `CashFlowr • ${context.repo.owner}/${context.repo.repo}`,
+                icon_url: "https://raw.githubusercontent.com/SpolyCode/CashFlowr/master/assets/icon.png"
+              }
+            };
+
+            const message = {
+              username: "CashFlowr Bot",
+              avatar_url: "https://raw.githubusercontent.com/SpolyCode/CashFlowr/master/assets/icon.png",
+              embeds: [embed]
+            };
+
+            await fetch(process.env.DISCORD_WEBHOOK, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(message)
+            });
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }} 
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          CHANGED_FILES: ${{ steps.changed-files.outputs.all }} 
