@@ -9,6 +9,7 @@ A modern financial management app built with React Native and Expo.
 - Set savings goals
 - Financial overview and analytics
 - Secure authentication with Supabase
+- Real-time Discord notifications for changes
 
 ## Installation
 
@@ -25,6 +26,7 @@ A modern financial management app built with React Native and Expo.
 - Supabase
 - date-fns
 - react-native-chart-kit
+- GitHub Actions
 
 ## License
 
@@ -37,4 +39,5 @@ This is a test commit to verify the Discord webhook integration with detailed em
 ## Recent Changes
 
 - Updated Discord notification system to use detailed embeds
-- Added links to changed files in notifications 
+- Added links to changed files in notifications
+- Added real-time change tracking feature 
