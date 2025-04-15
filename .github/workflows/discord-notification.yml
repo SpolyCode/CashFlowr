@@ -20,17 +20,45 @@ jobs:
         uses: jitterbit/get-changed-files@v1
 
       - name: Discord Notification
-        uses: appleboy/discord-action@master
+        uses: Ilshidur/action-discord@master
         with:
-          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
-          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
-          message: |
-            **New Changes in CashFlowr**
-            > ${{ github.event.head_commit.message }}
-            
-            **Author**: ${{ github.actor }}
-            **Branch**: ${{ github.ref_name }}
-            **Changed Files**:
-            ${{ steps.changed-files.outputs.all }}
-            
-            [View Changes](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) 
+          args: |
+            {
+              "username": "CashFlowr Bot",
+              "avatar_url": "https://raw.githubusercontent.com/SpolyCode/CashFlowr/master/assets/icon.png",
+              "embeds": [{
+                "title": "🔄 New Changes in CashFlowr",
+                "description": "Changes have been pushed to the repository",
+                "color": 3447003,
+                "fields": [
+                  {
+                    "name": "📝 Commit Message",
+                    "value": "```${{ github.event.head_commit.message }}```",
+                    "inline": false
+                  },
+                  {
+                    "name": "👤 Author",
+                    "value": "${{ github.actor }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "🌿 Branch",
+                    "value": "${{ github.ref_name }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "📄 Changed Files",
+                    "value": "```${{ steps.changed-files.outputs.all }}```",
+                    "inline": false
+                  }
+                ],
+                "url": "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}",
+                "timestamp": "${{ github.event.head_commit.timestamp }}",
+                "footer": {
+                  "text": "CashFlowr • ${{ github.repository }}",
+                  "icon_url": "https://raw.githubusercontent.com/SpolyCode/CashFlowr/master/assets/icon.png"
+                }
+              }]
+            }
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }} 
