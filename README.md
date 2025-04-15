@@ -40,4 +40,5 @@ This is a test commit to verify the Discord webhook integration with detailed em
 
 - Updated Discord notification system to use detailed embeds
 - Added links to changed files in notifications
-- Added real-time change tracking feature 
+- Added real-time change tracking feature
+- Fixed Discord notification format 
